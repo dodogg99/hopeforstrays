@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <form action="<%- PayGateWay %>" method="post">
+        <input type="text" name="MerchantID" value="<%- MerchantID %>" />
+        <input type="text" name="TradeSha" value="<%- order.shaEncrypt %>" />
+        <input type="text" name="TradeInfo" value="<%- order.aesEncrypt %>" />
+        <input type="text" name="Version" value="<%- Version %>" />
+        <button type="submit">送出</button>
+      </form>
+    </div>
+  </body>
+</html>
