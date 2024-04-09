@@ -8,7 +8,6 @@ import indexRouter from "./route/index.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
-const port = 3000;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -16,10 +15,6 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use('/', indexRouter);
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}.`);
-});
 
 app.use(function(req, res, next) {
   next(createError(404));
