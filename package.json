@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
   "author": "robert",
   "license": "ISC",
   "dependencies": {
-    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
     "express": "^4.18.3",
