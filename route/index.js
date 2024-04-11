@@ -72,13 +72,9 @@ router.post('/newebpay_return', function (req, res, next) {
 router.post('/newebpay_notify', function (req, res, next) {
   console.log('req.body notify data', req.body);
   const response = req.body;
-  console.log(typeof(response));
-  console.log(response);
-  console.log(response.TradeInfo);
   console.log(createAesDecrypt(response.TradeInfo));
-  console.log(typeof(createAesDecrypt(response.TradeInfo)));
   // 解密交易內容
-  const data = stringToObejct(createAesDecrypt(response.TradeInfo));
+  const data = createAesDecrypt(response.TradeInfo);
   console.log('data:', data);
 
   // 取得交易內容，並查詢本地端資料庫是否有相符的訂單
@@ -113,16 +109,6 @@ function genDataChain(order) {
     }&Email=${encodeURIComponent(order.Email)}`;
   }
 
-function stringToObejct(responseString) {
-  const pairs = responseString.split('&');
-  const result = {};
-  for (let pair of pairs) {
-      const [key, value] = pair.split('=');
-      result[key] = value;
-  }
-  return result;
-}
-
 function createAesEncrypt(tradeInfo) {
     const encrypt = crypto.createCipheriv('aes-256-cbc', HASHKEY, HASHIV);
     const enc = encrypt.update(genDataChain(tradeInfo), 'utf8', 'hex');
@@ -140,7 +126,7 @@ function createShaEncrypt(aesEncrypt) {
     const decrypt = crypto.createDecipheriv('aes-256-cbc', HASHKEY, HASHIV);
     const dec = decrypt.update(tradeInfo, 'hex', 'utf8');
     const plainText = dec + decrypt.final('utf8');
-    return plainText;
+    return JSON.parse(plainText);
     // return JSON.parse(result);
   }
 
