@@ -71,7 +71,7 @@ router.post('/newebpay_return', function (req, res, next) {
 // 確認交易：Notify
 router.post('/newebpay_notify', function (req, res, next) {
   console.log('req.body notify data', req.body);
-  const response = JSON.parse(req.body);
+  const response = req.body;
   console.log(typeof(response));
   console.log(response);
   console.log(response.TradeInfo);
