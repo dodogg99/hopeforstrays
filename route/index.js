@@ -71,15 +71,15 @@ router.post('/newebpay_return', function (req, res, next) {
 // 確認交易：Notify
 router.post('/newebpay_notify', function (req, res, next) {
   console.log('req.body notify data', req.body);
-  const response = stringToObejct(req.body);
+  const response = JSON.parse(req.body);
 
   // 解密交易內容
   const data = stringToObejct(createAesDecrypt(response.TradeInfo));
   console.log('data:', data);
 
   // 取得交易內容，並查詢本地端資料庫是否有相符的訂單
-  console.log(orders[data?.Result?.MerchantOrderNo]);
-  if (!orders[data?.Result?.MerchantOrderNo]) {
+  console.log(orders[data?.MerchantOrderNo]);
+  if (!orders[data?.MerchantOrderNo]) {
     console.log('找不到訂單');
     return res.end();
   }
