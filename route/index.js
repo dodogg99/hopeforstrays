@@ -78,8 +78,8 @@ router.post('/newebpay_notify', function (req, res, next) {
   console.log('data:', data);
 
   // 取得交易內容，並查詢本地端資料庫是否有相符的訂單
-  console.log(orders[data?.MerchantOrderNo]);
-  if (!orders[data?.MerchantOrderNo]) {
+  console.log(orders[data?.Result?.MerchantOrderNo]);
+  if (!orders[data?.Result?.MerchantOrderNo]) {
     console.log('找不到訂單');
     return res.end();
   }
