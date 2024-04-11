@@ -76,6 +76,7 @@ router.post('/newebpay_notify', function (req, res, next) {
   console.log(response);
   console.log(response.TradeInfo);
   console.log(createAesDecrypt(response.TradeInfo));
+  console.log(type(createAesDecrypt(response.TradeInfo)));
   // 解密交易內容
   const data = stringToObejct(createAesDecrypt(response.TradeInfo));
   console.log('data:', data);
