@@ -82,9 +82,7 @@ router.post('/newebpay_notify', function (req, res, next) {
   // 解密交易內容
   const data = createAesDecrypt(response.TradeInfo);
   console.log('data:', data);
-  } catch (error) {
-    console.log(`error: ${error}`);
-  }
+  
   // 取得交易內容，並查詢本地端資料庫是否有相符的訂單
   console.log(orders[data?.Result?.MerchantOrderNo]);
   if (!orders[data?.Result?.MerchantOrderNo]) {
@@ -103,6 +101,9 @@ router.post('/newebpay_notify', function (req, res, next) {
   console.log('付款完成，訂單：', orders[data?.Result?.MerchantOrderNo]);
 
   return res.end();
+} catch (error) {
+  console.log(`error: ${error}`);
+}
 });
 
 // 字串組合
