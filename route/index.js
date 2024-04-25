@@ -76,7 +76,7 @@ router.post('/newebpay_return', function (req, res, next) {
 
 // 確認交易：Notify
 router.post('/newebpay_notify', function (req, res, next) {
-  // try {
+  try {
   console.log('req.body notify data', req.body);
   const response = req.body;
   // 解密交易內容
@@ -101,9 +101,9 @@ router.post('/newebpay_notify', function (req, res, next) {
   console.log('付款完成，訂單：', orders[data?.Result?.MerchantOrderNo]);
 
   return res.end();
-// } catch (error) {
-//   console.error(`error: ${error}`);
-// }
+} catch (error) {
+  console.error(`error: ${error}`);
+}
 });
 
 // 字串組合
@@ -136,7 +136,8 @@ function createAesDecrypt(tradeInfo) {
   decrypt.setAutoPadding(false);
   const dec = decrypt.update(tradeInfo, 'hex', 'utf8');
   const plainText = dec + decrypt.final('utf8');
-  return JSON.parse(plainText);
+  const result = plainText.replace(/[\x00-\x20]+/g, '');
+  return JSON.parse(result);
 }
 
 export default router;
