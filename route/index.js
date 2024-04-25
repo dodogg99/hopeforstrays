@@ -76,12 +76,15 @@ router.post('/newebpay_return', function (req, res, next) {
 
 // 確認交易：Notify
 router.post('/newebpay_notify', function (req, res, next) {
+  try {
   console.log('req.body notify data', req.body);
   const response = req.body;
   // 解密交易內容
   const data = createAesDecrypt(response.TradeInfo);
   console.log('data:', data);
-
+  } catch (error) {
+    console.log(`error: ${error}`);
+  }
   // 取得交易內容，並查詢本地端資料庫是否有相符的訂單
   console.log(orders[data?.Result?.MerchantOrderNo]);
   if (!orders[data?.Result?.MerchantOrderNo]) {
@@ -127,12 +130,13 @@ function createShaEncrypt(aesEncrypt) {
   }
   
   // 對應文件 21, 22 頁：將 aes 解密
-  function createAesDecrypt(tradeInfo) {
-    const decrypt = crypto.createDecipheriv('aes-256-cbc', HASHKEY, HASHIV);
-    const dec = decrypt.update(tradeInfo, 'hex', 'utf8');
-    const plainText = dec + decrypt.final('utf8');
-    return JSON.parse(plainText);
-    // return JSON.parse(result);
-  }
+function createAesDecrypt(tradeInfo) {
+  const decrypt = crypto.createDecipheriv('aes-256-cbc', HASHKEY, HASHIV);
+  const dec = decrypt.update(tradeInfo, 'hex', 'utf8');
+  const plainText = dec + decrypt.final('utf8');
+  const result = plainText.replace(/[\x00-\x20]+/g, '');
+  return JSON.parse(result);
+  // return JSON.parse(result);
+}
 
 export default router;
