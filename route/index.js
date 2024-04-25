@@ -65,14 +65,19 @@ router.get('/check/:id', (req, res, next) => {
 // 交易成功：Return （可直接解密，將資料呈現在畫面上）
 router.post('/newebpay_return', function (req, res, next) {
   console.log('req.body return data', req.body);
-  res.render('success', { title: 'Express' });
+  //bodyParser middleware會自動將收到的body轉換為object格式
+  const status = req.body.Status;
+  if (status === 'SUCCESS') {
+    res.render('finish', { title: 'Express', status: '結帳成功'});
+  } else {
+    res.render('finish', { title: 'Express', status: status});
+  }
 });
 
 // 確認交易：Notify
 router.post('/newebpay_notify', function (req, res, next) {
   console.log('req.body notify data', req.body);
   const response = req.body;
-  console.log(createAesDecrypt(response.TradeInfo));
   // 解密交易內容
   const data = createAesDecrypt(response.TradeInfo);
   console.log('data:', data);
