@@ -133,9 +133,10 @@ function createShaEncrypt(aesEncrypt) {
   // 對應文件 21, 22 頁：將 aes 解密
 function createAesDecrypt(tradeInfo) {
   const decrypt = crypto.createDecipheriv('aes-256-cbc', HASHKEY, HASHIV);
-  decrypt.setAutoPadding(false);
+  // decrypt.setAutoPadding(false);
   const dec = decrypt.update(tradeInfo, 'hex', 'utf8');
   const plainText = dec + decrypt.final('utf8');
+  console.log(plainText);
   const result = plainText.replace(/[\x00-\x20]+/g, '');
   return JSON.parse(result);
 }
