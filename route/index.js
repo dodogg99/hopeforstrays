@@ -136,8 +136,11 @@ function createAesDecrypt(tradeInfo) {
   decrypt.setAutoPadding(false);
   const dec = decrypt.update(tradeInfo, 'hex', 'utf8');
   const plainText = dec + decrypt.final('utf8');
-  console.log(plainText);
+  console.log(`plainText: ${plainText}`);
   const result = plainText.replace(/[\x00-\x20]+/g, '');
+  console.log(`result: ${result}`);
+  const parseJson = JSON.parse(result);
+  console.log(`parseJson: ${parseJson}`);
   return JSON.parse(result);
 }
 
